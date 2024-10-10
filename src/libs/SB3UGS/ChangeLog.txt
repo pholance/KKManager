@@ -1,5 +1,103 @@
-﻿[23.3.1]
+﻿[24.2.2]
+  - Fixed replacing morph keyframes to support submeshes with identical number of vertices
+
+[24.2.1]
+  - Fixed replacement of morph keyframes if the shape target mesh has only one submesh
+  - Added command line option /DefaultVisualStyle
+  - Fixed invalid bone indices when creating "New Skin" with less than four influences
+
+[24.2]
+  - Fixed unhandled cloning of references to AudioClip and Shader.
+    Generalized and used for MonoScript, Material, Mesh, Texture2D and Cubemap as well
+  - Fixed crash when opening a MonoBehaviour in an Animator (tried to open a missing AB before)
+  - Fixed crash in Workspace when replacing morph keyframes
+  - Added support for imported meshes with blendshapes getting split by material
+
+[24.1.4]
+  - Fixed loading and saving big ABs. ABs close to 4GB and more are not supported.
+
+[24.1.3]
+  - Fixed WorldCoordinate option in NML computation. Now considers the pose of adjacent meshes.
+  - Added globally loadable shaders keep being globally loadable when copied
+
+[24.1.2]
+  - Fixed crash when saving ABs with Non-CAB files
+
+[24.1.1]
+  - Fixed freezing during save or corrupting streamed textures (introduced in 24.1.0)
+
+[24.1.0]
+  - Fixed crash for ReplaceMorphKeyframe for meshes with two or more submeshes
+  - Added drag 'n drop for ImportedMesh node onto ImportedMorph for mass replacement of keyframes
+  - Added minimum angle for custom normals in blendshapes for unmorphed positions
+  - Removed message for bad normals when keeping existing normals in blendshapes
+  - Fixed crash for AB files exceeding 2GB
+
+[24.0.2]
+  - Fixed crash in MeshEditor Attributes dialog for Meshes differing from SkinnedMeshRenderers
+  - Fixed crash in Texture editor preview for uv maps with negative scaling
+  - Added support for normals in blendshapes (FBX import and export)
+  - Fixed preview of meshes in older game engine (in XX units)
+
+[24.0.1]
+  - Fixed dark mesh in preview when showing morphs
+  - Fixed bounding box for skinned meshes with modified rest pose
+  - Fixed crash when selecting renderers other than MeshRenderer and SkinnedMeshRenderer
+
+[24.0]
+  - Changed platform: VS2022, .Net Framework 4.6.2, Windows 11 SDK 10.0.22621.0, MSVC v143
+  - Changed visual style to Windows7 look
+  - Added support for AssetBundle files with stripped Unity version
+  - Added cancelling with ESC in several dialogs
+  - Added display of vertex colours in 3d preview
+  - Added support for anti-aliasing in 3d preview
+  - Changed export and preview of UV maps now considers all selected meshes
+  - Fixed default destination frame in replacement dialog
+  - Fixed morph preview moving into the wrong X direction (same for morph normals)
+
+[23.4.1]
+  - Fixed AnimatorController table of strings unsorted since Unity 2019.4+
+  - Fixed crash when saving the file for empty AnimationClip slots in AnimatorController
+  - Changed inventory alignment for Unity5+ AssetBundle files. Added support for Linux versions.
+
+[23.4]
+  - Fixed SetMachineDefaultState in AnimatorControllerEditor when opening
+  - Fixed crash in RemoveUnusedBones() when SkinnedMeshRenderer was misaligned
+  - Added GetMaterialShaderState/SetMaterialShaderState in AnimatorEditor (not used in the gui)
+  - Fixed unknown member in cabinet's type definitions for Unity 2019.4+
+  - Fixed cabinet's inventory alignment for Unity 2021.3+
+  - Added support for Chinese Unity versions
+  - Fixed StreamingInfo offset (textures in big files e.i.)
+  - Changed ViewAssetData to be shortened by SHIFT and CTRL keys
+  - Changed MagicaBoneCloth checking and added computations for all related data
+
+[23.3.5]
+  - Fixed texture replacement not retaining filter mode, aniso, mipbias and wrap mode
+  - Fixed HC List entry optimization introduced in 23.3.4
+  - Added MagicaBoneCloth helper functions
+    (Types float3, float4 and quaternion are single line in MB editor)
+  - Fixed crash reading open files from previous sessions
+
+[23.3.4]
+  - Fixed pasting from clipboard into HC TextAssets
+
+[23.3.3]
+  - Fixed crash in Material editor for Unity Version < 5.5
+
+[23.3.2]
+  - Fixed crash when TextureNameAlternatives.txt was missing or had not been loaded by using the Material editor.
+    Settings moved into UnityPlugin.dll.config
+  - Changed texture alternatives without texture are skipped
+  - Fixed logical corruption when loading references of deleted assets
+  - Added partial support for ScaleContraint assets
+  - Added SetMachineDefaultState to AnimatorControllerEditor
+
+[23.3.1]
   - Added support for sound related HoneyCome TextAsset formats
+
+Known issue:
+  - exporting meshes crash without proper error message
+    Workaround: select a Material before export
 
 [23.3]
   - Fixed compression for Unity 2021.3+
@@ -12,9 +110,9 @@
 Known issues:
   - Adding a texture to a SceneAB causes "Uncommitted external Texture2D cant be selected"
              when it gets assigned to a Material.
-    Workarond: Save the SceneAB after adding the texture(s). No need to reload the SceneAB afterwards.
+    Workaround: Save the SceneAB after adding the texture(s). No need to reload the SceneAB afterwards.
   - Deleting assets then loading assets referencing the deleted assets leads to logical corruption of the AB
-    No workaround except not deleting shared assets. Can be seen with "View Data".
+    Workaround: load all assets in the file before deleting shared assets. Can be seen with "View Data".
   - Imported morphs get invalid when their mesh gets split by material
 
 [23.2.1]
@@ -330,10 +428,10 @@ Workaround for import and replacement of animations in older versions:
   - Fixed "Goto Frame" in the Bone editor not switching to the Frame editor
   - Fixed MuscleClipSize for AnimationClip in Unity 2018.4+
   - Added SetStateAttributes() in AnimatorController editor
-  - Added warning before ReplaceMeshRenderer() for unaligned SkinnedMeshrenderers to prevent crash when saving
+  - Added warning before ReplaceMeshRenderer() for misaligned SkinnedMeshrenderers to prevent crash when saving
   - Fixed AlignMesh() doesn't make the editor dirty
   - Fixed Virtual Avatar getting lost when reopening the Virtual Animator
-  - Fixed SetFrameName() crashing for unaligned SkinnedMeshRenderers
+  - Fixed SetFrameName() crashing for misaligned SkinnedMeshRenderers
   - Fixed RemoveBone() crashing for SkinnedMeshRenderers without influences
 
 [20.6.2]

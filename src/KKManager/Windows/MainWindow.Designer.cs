@@ -30,9 +30,12 @@ namespace KKManager.Windows
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openGameLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.changeGameInstallDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,6 +77,7 @@ namespace KKManager.Windows
             this.cleanUpDuplicateAndInvalidZipmodsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tryToDeleteToRecycleBinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
@@ -85,8 +89,7 @@ namespace KKManager.Windows
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelStatus = new System.Windows.Forms.ToolStripStatusLabel();
-            this.openGameLogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -106,6 +109,7 @@ namespace KKManager.Windows
             this.helpToolStripMenuItem});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.ShowItemToolTips = true;
             // 
             // fileToolStripMenuItem
             // 
@@ -117,6 +121,17 @@ namespace KKManager.Windows
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             resources.ApplyResources(this.fileToolStripMenuItem, "fileToolStripMenuItem");
+            // 
+            // openGameLogToolStripMenuItem
+            // 
+            this.openGameLogToolStripMenuItem.Name = "openGameLogToolStripMenuItem";
+            resources.ApplyResources(this.openGameLogToolStripMenuItem, "openGameLogToolStripMenuItem");
+            this.openGameLogToolStripMenuItem.Click += new System.EventHandler(this.openGameLogToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
             // 
             // changeGameInstallDirectoryToolStripMenuItem
             // 
@@ -257,8 +272,8 @@ namespace KKManager.Windows
             // 
             // installANewModToolStripMenuItem
             // 
-            this.installANewModToolStripMenuItem.Name = "installANewModToolStripMenuItem";
             resources.ApplyResources(this.installANewModToolStripMenuItem, "installANewModToolStripMenuItem");
+            this.installANewModToolStripMenuItem.Name = "installANewModToolStripMenuItem";
             this.installANewModToolStripMenuItem.Click += new System.EventHandler(this.installANewModToolStripMenuItem_Click);
             // 
             // updateSideloaderModpackToolStripMenuItem
@@ -377,7 +392,8 @@ namespace KKManager.Windows
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.languagesToolStripMenuItem});
+            this.languagesToolStripMenuItem,
+            this.tryToDeleteToRecycleBinToolStripMenuItem});
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.settingsToolStripMenuItem_DropDownOpening);
@@ -386,6 +402,11 @@ namespace KKManager.Windows
             // 
             this.languagesToolStripMenuItem.Name = "languagesToolStripMenuItem";
             resources.ApplyResources(this.languagesToolStripMenuItem, "languagesToolStripMenuItem");
+            // 
+            // tryToDeleteToRecycleBinToolStripMenuItem
+            // 
+            this.tryToDeleteToRecycleBinToolStripMenuItem.Name = "tryToDeleteToRecycleBinToolStripMenuItem";
+            resources.ApplyResources(this.tryToDeleteToRecycleBinToolStripMenuItem, "tryToDeleteToRecycleBinToolStripMenuItem");
             // 
             // helpToolStripMenuItem
             // 
@@ -456,17 +477,14 @@ namespace KKManager.Windows
             // 
             this.toolStripStatusLabelStatus.Name = "toolStripStatusLabelStatus";
             resources.ApplyResources(this.toolStripStatusLabelStatus, "toolStripStatusLabelStatus");
+            this.toolStripStatusLabelStatus.Click += new System.EventHandler(this.toolStripStatusLabelStatus_Click);
             // 
-            // openGameLogToolStripMenuItem
+            // toolTip1
             // 
-            this.openGameLogToolStripMenuItem.Name = "openGameLogToolStripMenuItem";
-            resources.ApplyResources(this.openGameLogToolStripMenuItem, "openGameLogToolStripMenuItem");
-            this.openGameLogToolStripMenuItem.Click += new System.EventHandler(this.openGameLogToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator7
-            // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            resources.ApplyResources(this.toolStripSeparator7, "toolStripSeparator7");
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 200;
+            this.toolTip1.ReshowDelay = 100;
+            this.toolTip1.ShowAlways = true;
             // 
             // MainWindow
             // 
@@ -547,5 +565,7 @@ namespace KKManager.Windows
         private ToolStripMenuItem openIndividualDownloadWebsiteToolStripMenuItem;
         private ToolStripMenuItem openGameLogToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator7;
+        private ToolStripMenuItem tryToDeleteToRecycleBinToolStripMenuItem;
+        private ToolTip toolTip1;
     }
 }

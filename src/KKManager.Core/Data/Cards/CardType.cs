@@ -11,6 +11,10 @@
         KoikatsuSunshine,
         RoomGirl,
         HoneyCome,
-        HoneyComeccp
+        HoneyComeccp,
+        SamabakeScramble,
+        KoikatuClothes,
+        AiSyoujyoClothes,
+        SamabakeScrambleClothes,
     }
 }

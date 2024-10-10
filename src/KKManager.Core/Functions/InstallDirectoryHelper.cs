@@ -71,6 +71,10 @@ namespace KKManager.Functions
             private set => _tempPath = value;
         }
 
+        public static string ScreenshotDir => Path.Combine(GameDirectory.FullName, "UserData\\cap");
+        public static string CardDir => Path.Combine(GameDirectory.FullName, "UserData\\chara");
+        public static string SceneDir => Path.Combine(GameDirectory.FullName, "UserData\\Studio\\scene");
+
         public static GameType GameType { get; private set; } = GameType.Unknown;
 
         public static void Initialize(DirectoryInfo gameDirectory)
@@ -91,6 +95,7 @@ namespace KKManager.Functions
                 new Tuple<string, GameType>("RoomGirl.exe", GameType.RoomGirl),
                 new Tuple<string, GameType>("HoneyCome.exe", GameType.HoneyCome),
                 new Tuple<string, GameType>("HoneyComeccp.exe", GameType.HoneyComeSteam),
+                new Tuple<string, GameType>("SamabakeScramble.exe", GameType.SamabakeScramble),
             };
 
             GameType = gameCheck.FirstOrDefault(x => File.Exists(Path.Combine(path, x.Item1)))?.Item2 ?? GameType.Unknown;
@@ -137,8 +142,8 @@ namespace KKManager.Functions
                 //               File.Exists(Path.Combine(path, "CharaStudio.exe"));
 
                 var anyDatas = Directory.GetDirectories(path)
-                    .Any(x => x.EndsWith("_Data", StringComparison.OrdinalIgnoreCase));
-                var abdataExist = File.Exists(Path.Combine(path, "abdata/abdata"));
+                                        .Any(x => x.EndsWith("_Data", StringComparison.OrdinalIgnoreCase));
+                var abdataExist = File.Exists(Path.Combine(path, "abdata/abdata")) || File.Exists(Path.Combine(path, "abdata/sv_abdata"));
 
                 // todo use this to offer to install bepinex and other mods / run update wizzard
                 //var modsExist = Directory.Exists(Path.Combine(path, "bepinex")) && Directory.Exists(Path.Combine(path, "mods"));
@@ -167,10 +172,11 @@ namespace KKManager.Functions
                 case GameType.RoomGirl: return "Room Girl";
                 case GameType.HoneyCome: return "HoneyCome";
                 case GameType.HoneyComeSteam: return "HoneyCome come come party";
+                case GameType.SamabakeScramble: return "Summer Vacation Scramble";
                 default: throw new ArgumentOutOfRangeException(nameof(gameType), gameType, null);
             }
         }
-        
+
         /// <summary>
         /// Figure out where the log file is written to and open it.
         /// </summary>

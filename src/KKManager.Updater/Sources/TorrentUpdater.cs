@@ -21,10 +21,11 @@ namespace KKManager.Updater.Sources
     public static class TorrentUpdater
     {
         private static ClientEngine _client;
+        private static bool _eventsInitialized;
         private static async Task<ClientEngine> GetClient()
         {
             // Only runs once the first time
-            if (_client == null)
+            if (!_eventsInitialized)
             {
                 // When waking up from sleep restart all running torrents so they re-announce and such
                 // If sleep happened for a while then the torrent can be stuck for a long time otherwise
@@ -50,9 +51,8 @@ namespace KKManager.Updater.Sources
                         }
                     }
                 };
-#if DEBUG
-                MonoTorrent.Logging.LoggerFactory.Register(className => new MonoTorrent.Logging.TextLogger(Console.Out, className));
-#endif
+                MonoTorrent.Logging.LoggerFactory.Register(className => new TorrentUpdaterLogger(className));
+                _eventsInitialized = true;
             }
 
             if (_client == null || _client.Disposed)
@@ -344,9 +344,39 @@ namespace KKManager.Updater.Sources
             }
         }
 
+        private sealed class TorrentUpdaterLogger : MonoTorrent.Logging.ILogger
+        {
+            private readonly string _prefix;
+            private readonly TextWriter _writer;
+
+            public TorrentUpdaterLogger(string className)
+            {
+                _prefix = className == null ? "[P2P]" : $"[P2P:{className}]";
+                _writer = Console.Out;
+            }
+
+            public void Debug(string message)
+            {
+                if (KKManager.Properties.Settings.Default.P2P_VerboseLogging)
+                    _writer.WriteLine($"{_prefix} [DEBUG] {message}");
+            }
+
+            public void Error(string message)
+            {
+                _writer.WriteLine($"{_prefix} [ERROR] {message}");
+            }
+
+            public void Info(string message)
+            {
+                if (KKManager.Properties.Settings.Default.P2P_VerboseLogging)
+                    _writer.WriteLine($"{_prefix} {message}");
+            }
+        }
+
         public static async Task Stop()
         {
             await DisposeClient();
+            _client = null;
         }
 
         public static async Task Start()

@@ -35,7 +35,7 @@ namespace KKManager.Windows
     {
         private UpdateSourceBase[] _updateSources;
         public UpdateSourceBase[] GetUpdateSources() => _updateSources ?? (_updateSources = UpdateSourceManager.FindUpdateSources(Program.ProgramLocation));
-
+        
         public MainWindow()
         {
             Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
@@ -49,6 +49,12 @@ namespace KKManager.Windows
 
             InstallDirectoryHelper.Initialize(GetGameDirectory());
 
+            installDirectoryToolStripMenuItem.ToolTipText = InstallDirectoryHelper.GameDirectory.FullName;
+            screenshotsToolStripMenuItem.ToolTipText = InstallDirectoryHelper.ScreenshotDir;
+            charactersToolStripMenuItem.ToolTipText = InstallDirectoryHelper.CardDir;
+            scenesToolStripMenuItem.ToolTipText = InstallDirectoryHelper.SceneDir;
+            kKManagerToolStripMenuItem.ToolTipText = Program.ProgramLocation;
+
             SetupTabs();
 
             Task.Run(PopulateStartMenu);
@@ -60,11 +66,12 @@ namespace KKManager.Windows
 #endif
             var gameName = InstallDirectoryHelper.GameType.GetFancyGameName();
             var installDir = InstallDirectoryHelper.GameDirectory.FullName;
-            Text = $"KK Manager {version} (HoneyCoomCCP edition) - [{gameName}] in {installDir}";
+            Text = $"KK Manager {version} - {gameName} in {installDir}";
             Console.WriteLine($"Game: {gameName}   Path: {installDir}");
 
             Settings.Default.Binder.BindControl(checkForUpdatesOnStartupToolStripMenuItem, settings => settings.AutoUpdateSearch, this);
             Settings.Default.Binder.BindControl(useSystemProxyServerToolStripMenuItem, settings => settings.UseProxy, this);
+            Settings.Default.Binder.BindControl(tryToDeleteToRecycleBinToolStripMenuItem, settings => settings.DeleteToRecycleBin, this);
             Settings.Default.Binder.SendUpdates(this);
 
             // Before using the window location, check if isn't the default value and that it's actually visible on the screen
@@ -470,17 +477,17 @@ namespace KKManager.Windows
 
         private void screenshotsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessTools.SafeStartProcess(Path.Combine(InstallDirectoryHelper.GameDirectory.FullName, "UserData\\cap"));
+            ProcessTools.SafeStartProcess(InstallDirectoryHelper.ScreenshotDir);
         }
 
         private void charactersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessTools.SafeStartProcess(Path.Combine(InstallDirectoryHelper.GameDirectory.FullName, "UserData\\chara"));
+            ProcessTools.SafeStartProcess(InstallDirectoryHelper.CardDir);
         }
 
         private void scenesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProcessTools.SafeStartProcess(Path.Combine(InstallDirectoryHelper.GameDirectory.FullName, "UserData\\Studio\\scene"));
+            ProcessTools.SafeStartProcess(InstallDirectoryHelper.SceneDir);
         }
 
         private void kKManagerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -821,6 +828,11 @@ namespace KKManager.Windows
         private void openGameLogToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InstallDirectoryHelper.OpenLog();
+        }
+
+        private void toolStripStatusLabelStatus_Click(object sender, EventArgs e)
+        {
+            openLogViewerToolStripMenuItem_Click(sender, e);
         }
     }
 }
